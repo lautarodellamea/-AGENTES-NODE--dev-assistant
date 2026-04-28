@@ -1,20 +1,59 @@
 # DevAssistant — Setup y fundamentos (módulo 02)
 
-Proyecto base del curso: asistente de documentación con RAG, function calling y APIs de modelos.
+Proyecto base del curso: asistente de documentación con **RAG**, chat estilo CLI y conexión a APIs de modelos (**Anthropic / OpenAI**).
 
-## Qué está hecho hasta ahora
+## Requisitos
 
-- **Entorno Node** con **TypeScript** y **tsx** para ejecutar sin build intermedio (`npm run dev` / `start`).
-- **Módulos ES** (`"type": "module"`) y configuración en `tsconfig.json`.
-- **Variables de entorno** con `dotenv`: proveedor (`anthropic` u `openai`), claves, modelos, rutas de docs y parámetros RAG centralizados en `src/config.ts` y tipos en `src/types.ts`.
-- **Punto de entrada** `src/index.ts`: carga la config y muestra un resumen para confirmar que todo está enlazado bien antes de seguir con llamadas a la API.
+- Node.js (recomendado **18+**)
+- npm
 
-## Cómo probarlo
+## Configuración
 
-1. Copiar y completar `.env` según las variables que espera `config.ts`.
-2. `npm install` y luego `npm run dev`.
+1. Instalar dependencias:
 
-Documentación de ejemplo del RAG vive en `docs/sample-project/`.
+   ```bash
+   npm install
+   ```
+
+2. Crear `.env` (en la raíz del proyecto) con estas variables:
+
+   - `MODEL_PROVIDER`: `anthropic` o `openai`
+   - `ANTHROPIC_API_KEY`
+   - `OPENAI_API_KEY`
+   - `ANTHROPIC_MODEL` (default en código: `claude-sonnet-4-6`)
+   - `OPENAI_MODEL` (default en código: `gpt-4o-mini`)
+   - `OPENAI_EMBEDDING_MODEL` (default en código: `text-embedding-3-small`)
+   - `DOCS_PATH` (default: `./docs/sample-project`)
+   - `DB_PATH` (default: `./data/vectors.db`)
+   - `RAG_TOP_K` (default: `5`)
+
+La configuración se centraliza en `src/config.ts` y los tipos en `src/types.ts`.
+
+## Scripts
+
+- Desarrollo (sin build intermedio, usando `tsx`):
+
+  ```bash
+  npm run dev
+  ```
+
+- Producción / ejecución:
+
+  ```bash
+  npm run start
+  ```
+
+## Estructura principal
+
+- `src/index.ts`: punto de entrada (demos / ejecución principal).
+- `src/chat/`: chat/conversación (historial + envío al modelo).
+- `src/llm/`: clientes y utilidades de integración con el proveedor.
+- `docs/sample-project/`: documentación de ejemplo para RAG.
+
+## Notas de tipado (Anthropic)
+
+En el SDK de Anthropic, el prompt de sistema se envía como `system: string` y el array `messages` acepta roles **solo** `"user" | "assistant"`.
+Si tu tipo local de mensaje incluye `"system"`, TypeScript puede marcar error de incompatibilidad.
 
 ## Rama de trabajo
 

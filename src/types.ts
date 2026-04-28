@@ -1,4 +1,4 @@
-export type Role = "user" | "system";
+export type Role = "user" | "assistant";
 
 export interface Message {
   role: Role;
